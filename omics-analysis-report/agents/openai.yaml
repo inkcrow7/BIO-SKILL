@@ -1,0 +1,4 @@
+interface:
+  display_name: "Omics Analysis Report"
+  short_description: "撰写交付可读的生信分析结果报告并校验图类型覆盖要求"
+  default_prompt: "Use $omics-analysis-report to draft a client-facing bioinformatics report from this results directory."

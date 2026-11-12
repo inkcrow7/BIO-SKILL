@@ -1,0 +1,9 @@
+figure_type	representative_path	note
+scrna_umap	Figures/Cell_Types.ALL.UMAP.png	Cell type landscape UMAP
+scrna_composition_bar	Figures/cell_types.barplot_PCT.png	Cell type percentage stacked barplot
+scrna_marker_dotplot	Figures/Dotplot.gene_cells.png	Marker expression dotplot
+communication_circle	Figures/CellChat_circle_TNF.png	Representative pathway circle plot
+communication_heatmap	Figures/CellChat_heatmap_TNF.png	Representative pathway communication heatmap
+communication_bubble	Figures/CellChat_bubble_TNF.png	Representative ligand-receptor bubble plot
+communication_river	Figures/CellChat_river_TNF.png	Representative source-target river plot
+communication_network	Figures/CellChat_network_TNF.png	Representative pathway network plot

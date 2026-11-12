@@ -1,0 +1,2469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}}</title>
+<link rel="icon" href="data:,">
+{{TABLE_PREVIEW_VENDOR_CSS}}
+<style>
+/* ============================================================
+   Omics Analysis Report — Refined Academic Style
+   ============================================================ */
+
+:root {
+  --primary: #1e3a5f;
+  --primary-soft: #2c5282;
+  --primary-light: #eef4fb;
+  --accent: #c19a4b;
+  --accent-soft: #e8d9b8;
+  --text: #1a202c;
+  --text-secondary: #4a5568;
+  --text-muted: #718096;
+  --border: #e2e8f0;
+  --border-strong: #cbd5e0;
+  --bg: #ffffff;
+  --bg-soft: #fafbfc;
+  --bg-code: #f6f8fa;
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 3px 12px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 6px 24px rgba(15, 23, 42, 0.10);
+  --font-serif: "Source Serif Pro", "Iowan Old Style", Georgia, "Noto Serif SC", "Songti SC", "SimSun", serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", "Helvetica Neue", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  height: 100%;
+  font-size: 15.5px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-serif);
+  line-height: 1.85;
+  color: var(--text);
+  background: linear-gradient(180deg, #f6f8fb 0%, #ffffff 280px);
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ============================================================
+   Container
+   ============================================================ */
+.report-shell {
+  --table-preview-width: 640px;
+  --table-preview-fields-height: min(220px, 30vh);
+  height: 100vh;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  overflow: hidden;
+}
+
+.report-shell.table-preview-open {
+  grid-template-columns: minmax(560px, 1fr) 10px minmax(420px, var(--table-preview-width));
+}
+
+.report-main {
+  min-width: 0;
+  min-height: 0;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 2rem 0 3rem 304px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+.report-main::-webkit-scrollbar { width: 10px; }
+.report-main::-webkit-scrollbar-track { background: transparent; }
+.report-main::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+
+.report-shell.table-preview-open .report-container {
+  width: 100%;
+  max-width: none;
+  min-height: 100%;
+  margin: 0;
+  padding: 2rem;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.report-shell.table-preview-open .report-main {
+  padding: 0 0 0 304px;
+}
+
+.report-shell.table-preview-open h1 {
+  font-size: 1.55rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.report-container {
+  width: min(calc(100% - 4rem), 1080px);
+  min-height: calc(100vh - 5rem);
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 3.5rem 3.5rem 5rem;
+  background: var(--bg);
+  box-shadow: var(--shadow-lg);
+  border-radius: 6px;
+}
+
+/* ============================================================
+   Title banner (h1)
+   ============================================================ */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 2.4em;
+  margin-bottom: 0.7em;
+  line-height: 1.35;
+  letter-spacing: 0.005em;
+}
+
+h1 {
+  font-size: 1.95rem;
+  text-align: center;
+  margin: 0 -1.5rem 1.6em;
+  padding: 1.6rem 1.5rem 1.4rem;
+  color: var(--primary);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  background: linear-gradient(135deg, #f4f7fb 0%, #eaf1f9 100%);
+  border-top: 4px solid var(--primary);
+  border-bottom: 1px solid var(--border);
+  border-radius: 4px 4px 0 0;
+  position: relative;
+}
+
+h1::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 2px;
+  background: var(--accent);
+  margin: 0.7em auto 0;
+}
+
+h2 {
+  font-size: 1.4rem;
+  padding: 0.55em 0 0.45em 1em;
+  margin-top: 2.8em;
+  color: var(--primary);
+  border-left: 4px solid var(--primary);
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(to right, var(--primary-light) 0%, transparent 70%);
+  position: relative;
+}
+
+h3 {
+  font-size: 1.18rem;
+  margin-top: 1.9em;
+  padding: 0 0 0.35em 0.1em;
+  color: var(--primary-soft);
+  border-bottom: 1px dashed var(--border-strong);
+}
+
+h4 {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  margin-top: 1.5em;
+  font-weight: 600;
+}
+
+/* ============================================================
+   Floating Table of Contents
+   ============================================================ */
+.report-toc {
+  position: fixed;
+  top: 2rem;
+  left: max(1rem, calc((100vw - 1080px) / 2 - 292px));
+  z-index: 30;
+  width: 264px;
+  max-height: calc(100vh - 4rem);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(10px);
+  transition: width 0.22s ease, box-shadow 0.22s ease;
+}
+
+.toc-header {
+  flex: 0 0 auto;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-soft);
+}
+
+.toc-toggle {
+  width: 100%;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 0;
+  background: transparent;
+  padding: 0.75em 1em;
+  color: var(--primary);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: left;
+}
+
+.toc-toggle::after {
+  content: "−";
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 14px;
+  line-height: 1;
+}
+
+.report-toc.is-collapsed {
+  width: 46px;
+}
+
+.report-toc.is-collapsed .toc-body {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  pointer-events: none;
+}
+
+.report-toc.is-collapsed .toc-toggle {
+  justify-content: center;
+  min-height: 46px;
+  padding: 0;
+  writing-mode: vertical-rl;
+  letter-spacing: 0.16em;
+}
+
+.report-toc.is-collapsed .toc-toggle::after {
+  content: "+";
+  writing-mode: horizontal-tb;
+  position: absolute;
+  right: -7px;
+  top: -7px;
+}
+
+.toc-body {
+  overflow: auto;
+  max-height: calc(100vh - 6rem);
+  opacity: 1;
+  padding: 0.7em 0.85em 0.9em;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+  transition: max-height 0.24s ease, opacity 0.18s ease, padding 0.24s ease;
+}
+
+.toc-body::-webkit-scrollbar { width: 7px; }
+.toc-body::-webkit-scrollbar-track { background: transparent; }
+.toc-body::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 4px;
+}
+
+.report-toc ul {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.report-toc .toc-level-2 {
+  margin: 0.25em 0;
+  font-family: var(--font-sans);
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+.report-toc .toc-level-3 {
+  margin: 0.22em 0;
+  font-family: var(--font-sans);
+  font-size: 0.82em;
+  font-weight: 400;
+}
+
+.report-toc a {
+  display: block;
+  border-bottom: none;
+  border-radius: 4px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  padding: 0.36em 0.45em;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s, padding-left 0.15s;
+}
+
+.report-toc a:hover {
+  background: var(--primary-light);
+  color: var(--primary);
+  padding-left: 0.65em;
+}
+
+.report-toc .toc-sublist {
+  max-height: 0;
+  overflow: hidden;
+  margin: 0 0 0 0.6em;
+  padding-left: 0.55em;
+  border-left: 1px solid var(--border);
+  opacity: 0;
+  transition: max-height 0.28s ease, opacity 0.18s ease;
+}
+
+.report-toc .toc-level-2.is-active-section > .toc-sublist {
+  max-height: 900px;
+  opacity: 1;
+}
+
+.report-shell.table-preview-open .report-toc {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  width: 264px;
+  max-height: calc(100vh - 2rem);
+  margin: 0;
+}
+
+.report-shell.table-preview-open .report-toc.is-collapsed {
+  width: 46px;
+}
+
+.report-shell.table-preview-open .report-toc.is-collapsed .toc-toggle {
+  writing-mode: vertical-rl;
+  justify-content: center;
+  padding: 0;
+}
+
+.report-shell.table-preview-open .report-toc.is-collapsed .toc-toggle::after {
+  position: absolute;
+}
+
+.report-shell.table-preview-open:has(.report-toc.is-collapsed) .report-main {
+  padding-left: 72px;
+}
+
+.report-toc a.is-active {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* ============================================================
+   Paragraphs & text
+   ============================================================ */
+p {
+  margin: 0.85em 0;
+  text-align: justify;
+  hyphens: auto;
+  text-justify: inter-ideograph;
+}
+
+strong, b { font-weight: 700; color: var(--text); }
+em, i    { font-style: italic; color: var(--text-secondary); }
+
+a {
+  color: var(--primary-soft);
+  text-decoration: none;
+  border-bottom: 1px dotted transparent;
+  transition: border-color 0.15s, color 0.15s;
+}
+a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+sup.citation-ref {
+  margin-left: 0.12em;
+  font-size: 0.72em;
+  line-height: 0;
+  vertical-align: super;
+}
+
+sup.citation-ref a {
+  border-bottom: 0;
+  color: var(--primary-soft);
+  white-space: nowrap;
+}
+
+sup.citation-ref a:hover {
+  color: var(--accent);
+  border-bottom: 0;
+}
+
+.reference-anchor {
+  scroll-margin-top: 96px;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  background: var(--bg-code);
+  padding: 0.12em 0.4em;
+  border-radius: 3px;
+  color: #b54848;
+  word-break: break-all;
+  border: 1px solid #eef0f3;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 3em 0;
+  position: relative;
+  text-align: center;
+}
+hr::after {
+  content: "❖";
+  position: absolute;
+  top: -0.6em;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg);
+  padding: 0 0.6em;
+  color: var(--accent);
+  font-size: 0.85em;
+}
+
+/* ============================================================
+   Tables — refined three-line academic style
+   ============================================================ */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.4em 0;
+  font-size: 0.92em;
+  font-family: var(--font-sans);
+  box-shadow: var(--shadow-sm);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+table thead tr {
+  background: linear-gradient(180deg, var(--primary) 0%, var(--primary-soft) 100%);
+  color: #fff;
+}
+
+table thead th {
+  padding: 11px 14px;
+  text-align: left;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  border-bottom: 2px solid var(--accent);
+}
+
+table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.12s;
+}
+table tbody tr:nth-child(even) { background: var(--bg-soft); }
+table tbody tr:hover { background: var(--primary-light); }
+
+table tbody td {
+  padding: 9px 14px;
+  vertical-align: top;
+  word-break: break-word;
+}
+
+table tbody tr:last-child {
+  border-bottom: 2px solid var(--primary);
+}
+
+.folded-table {
+  margin: 1.15em 0 1.7em;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.folded-table > summary {
+  cursor: pointer;
+  padding: 0.85em 1em;
+  color: var(--primary);
+  background: var(--primary-light);
+  font-family: var(--font-sans);
+  font-size: 0.92em;
+  font-weight: 700;
+  list-style-position: inside;
+}
+
+.folded-table > summary:hover {
+  color: var(--primary-soft);
+}
+
+.folded-table > table {
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.table-note {
+  font-size: 0.86em;
+  color: var(--text-secondary);
+  margin: 0.5em 0 1.6em;
+  font-family: var(--font-sans);
+  line-height: 1.65;
+  padding: 0 0.4em;
+}
+
+.table-note strong { color: var(--text); }
+
+/* ============================================================
+   Figures
+   ============================================================ */
+.figure {
+  margin: 2em auto;
+  text-align: center;
+  max-width: 100%;
+  padding: 0.8em;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.figure > .img-link {
+  display: inline-block;
+  margin: 0 6px;
+}
+
+.figure img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+  border-radius: 3px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s, transform 0.2s;
+  background: #fff;
+}
+
+.figure img:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+/* Horizontal scroll container for multi-image figure groups.
+   Width is bounded by .figure (which inherits the report text column),
+   so figures never overflow the page and viewers scroll left-to-right
+   instead of stacking vertically. */
+.figure-scroll {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  gap: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  padding: 4px 2px 10px;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+  text-align: left;
+}
+
+.figure-scroll::-webkit-scrollbar       { height: 9px; }
+.figure-scroll::-webkit-scrollbar-track { background: transparent; }
+.figure-scroll::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 4px;
+}
+.figure-scroll::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+.figure-scroll .img-link {
+  flex: 0 0 auto;
+  margin: 0;
+  padding-top: 34px;
+}
+
+.figure-scroll .img-link::before {
+  content: attr(data-panel-label);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  min-width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  padding: 0 7px;
+  border-radius: 4px;
+  background: rgba(30, 58, 95, 0.84);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  opacity: 1;
+  pointer-events: none;
+  transform: none;
+}
+
+.figure-scroll .img-link:hover::before,
+.figure-scroll .img-link:focus-visible::before {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.figure-scroll img {
+  max-height: 480px;
+  width: auto;
+  max-width: none;
+  height: auto;
+}
+
+figcaption, .figure-caption {
+  display: block;
+  width: 100%;
+  margin-top: 0.9em;
+  font-size: 0.88em;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  line-height: 1.7;
+  text-align: left;
+  padding: 0 0.4em;
+  border-top: 1px solid var(--border);
+  padding-top: 0.8em;
+}
+
+figcaption strong, .figure-caption strong {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.img-link {
+  display: inline-block;
+  position: relative;
+}
+
+.img-link::after {
+  content: "↗";
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  font-size: 11px;
+  font-family: var(--font-sans);
+  background: rgba(30, 58, 95, 0.72);
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 3px;
+  opacity: 0;
+  transition: opacity 0.15s;
+  pointer-events: none;
+}
+
+.img-link:hover::after { opacity: 1; }
+
+/* ============================================================
+   File-link chips
+   ============================================================ */
+.file-link {
+  font-family: var(--font-mono);
+  font-size: 0.84em;
+  background: var(--bg-code);
+  padding: 0.15em 0.55em;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  color: var(--primary-soft);
+  text-decoration: none;
+  word-break: break-all;
+  transition: all 0.15s;
+  display: inline-block;
+  line-height: 1.4;
+}
+
+button.file-link {
+  cursor: pointer;
+  text-align: left;
+}
+
+.file-link::before {
+  content: "📄 ";
+  font-size: 0.9em;
+  margin-right: 0.15em;
+}
+
+.table-preview-trigger::before {
+  content: "▦ ";
+}
+
+.table-preview-trigger[data-table-status="error"] {
+  border-color: #e9b7b7;
+  color: #a33a3a;
+}
+
+.file-link:hover {
+  background: var(--primary-light);
+  border-color: var(--primary-soft);
+  color: var(--primary);
+}
+
+/* ============================================================
+   Table preview split sidebar
+   ============================================================ */
+.table-preview-splitter {
+  display: none;
+  align-self: stretch;
+  justify-self: stretch;
+  min-height: 0;
+  height: 100vh;
+  width: 16px;
+  margin-left: -3px;
+  margin-right: -3px;
+  position: relative;
+  z-index: 20;
+  cursor: col-resize;
+  touch-action: none;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0,
+      transparent calc(50% - 2px),
+      var(--border-strong) calc(50% - 2px),
+      var(--border-strong) calc(50% + 2px),
+      transparent calc(50% + 2px),
+      transparent 100%
+    );
+}
+
+.table-preview-splitter:hover,
+.table-preview-splitter:focus {
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0,
+      transparent calc(50% - 3px),
+      var(--primary-soft) calc(50% - 3px),
+      var(--primary-soft) calc(50% + 3px),
+      transparent calc(50% + 3px),
+      transparent 100%
+    );
+}
+
+.report-shell.table-preview-open .table-preview-splitter {
+  display: block;
+}
+
+.report-shell.is-resizing {
+  cursor: col-resize;
+  user-select: none;
+}
+
+.report-shell.is-resizing .table-preview-splitter {
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0,
+      transparent calc(50% - 3px),
+      var(--primary-soft) calc(50% - 3px),
+      var(--primary-soft) calc(50% + 3px),
+      transparent calc(50% + 3px),
+      transparent 100%
+    );
+}
+
+.report-shell.is-field-resizing {
+  cursor: row-resize;
+  user-select: none;
+}
+
+.table-preview-drawer {
+  display: none;
+  position: relative;
+  z-index: 19;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  background: #fff;
+  border-left: 1px solid var(--border-strong);
+  box-shadow: -8px 0 20px rgba(15, 23, 42, 0.08);
+  font-family: var(--font-sans);
+  overflow: hidden;
+}
+
+.report-shell.table-preview-open .table-preview-drawer {
+  display: flex;
+}
+
+.table-preview-header {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-soft);
+}
+
+.table-preview-title {
+  min-width: 0;
+}
+
+.table-preview-title strong,
+.table-preview-file-row {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.table-preview-file-name {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--primary);
+  font-size: 0.98rem;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.table-preview-helper {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: 1px solid var(--accent-soft);
+  border-radius: 50%;
+  background: #fff8e8;
+  color: #7a5b1e;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 18px;
+  cursor: help;
+}
+
+.table-preview-helper[hidden] {
+  display: none;
+}
+
+.table-preview-helper-popover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2147483000;
+  width: max-content;
+  max-width: min(320px, calc(100vw - 32px));
+  padding: 5px 7px;
+  border: 1px solid #9ca3af;
+  border-radius: 3px;
+  background: #f8fafc;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.18);
+  color: #111827;
+  font-size: 0.76rem;
+  font-weight: 400;
+  line-height: 1.35;
+  white-space: normal;
+  pointer-events: none;
+}
+
+.table-preview-helper-popover[hidden] {
+  display: none;
+}
+
+.table-preview-meta {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table-preview-status {
+  display: block;
+  margin-top: 5px;
+  color: #7a5b1e;
+  font-size: 0.78rem;
+  line-height: 1.25;
+  white-space: normal;
+}
+
+.table-preview-status[hidden] {
+  display: none;
+}
+
+.table-preview-actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.table-preview-download,
+.table-preview-close {
+  min-height: 30px;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--primary-soft);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  line-height: 1;
+  padding: 0 11px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.table-preview-download {
+  display: inline-flex;
+  align-items: center;
+}
+
+.table-preview-download:hover,
+.table-preview-close:hover {
+  border-color: var(--primary-soft);
+  color: var(--primary);
+}
+
+.table-preview-grid {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 12px 16px 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.table-preview-grid:not(.is-fallback),
+.table-preview-grid:not(.is-fallback) * {
+  box-sizing: content-box;
+}
+
+.table-preview-grid:not(.is-fallback) table {
+  width: auto;
+  margin: 0;
+  border-collapse: separate;
+  border-radius: 0;
+  box-shadow: none;
+  font-size: inherit;
+  overflow: visible;
+}
+
+.table-preview-grid:not(.is-fallback) th,
+.table-preview-grid:not(.is-fallback) td {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  white-space: normal;
+}
+
+.table-preview-grid:not(.is-fallback) #luckysheet,
+.table-preview-grid:not(.is-fallback) .luckysheet,
+.table-preview-grid:not(.is-fallback) #luckysheet-toolbar,
+.table-preview-grid:not(.is-fallback) .luckysheet-toolbar,
+.table-preview-grid:not(.is-fallback) #luckysheet-wa-editor,
+.table-preview-grid:not(.is-fallback) #luckysheet-sheet-area,
+.table-preview-grid:not(.is-fallback) #luckysheet-bottom {
+  font-family: var(--font-sans) !important;
+}
+
+.table-preview-grid:not(.is-fallback) #luckysheet-toolbar,
+.table-preview-grid:not(.is-fallback) .luckysheet-toolbar,
+.table-preview-grid:not(.is-fallback) #luckysheet-wa-editor,
+.table-preview-grid:not(.is-fallback) #luckysheet-sheet-area {
+  background: var(--bg-soft) !important;
+  border-color: var(--border) !important;
+}
+
+.table-preview-grid:not(.is-fallback) .luckysheet-toolbar-button,
+.table-preview-grid:not(.is-fallback) .luckysheet-toolbar-menu-button,
+.table-preview-grid:not(.is-fallback) .luckysheet-sheets-item {
+  border-radius: 4px !important;
+}
+
+.table-preview-grid:not(.is-fallback) #luckysheet-icon-freezen-menu,
+.table-preview-grid:not(.is-fallback) #luckysheet-icon-autofilter,
+.table-preview-grid:not(.is-fallback) #luckysheet-icon-seachmore {
+  width: max-content !important;
+  min-width: max-content !important;
+  max-width: none !important;
+  height: 30px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 10px !important;
+  box-sizing: border-box !important;
+  background-image: none !important;
+  color: #1f2937 !important;
+  font-family: var(--font-sans) !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  opacity: 1 !important;
+  overflow: visible !important;
+  vertical-align: top !important;
+  visibility: visible !important;
+  text-indent: 0 !important;
+  white-space: nowrap !important;
+}
+
+.table-preview-grid:not(.is-fallback) .omics-luckysheet-preview-button::before,
+.table-preview-grid:not(.is-fallback) .omics-luckysheet-preview-button::after {
+  content: none !important;
+  display: none !important;
+}
+
+.table-preview-grid:not(.is-fallback) #luckysheet-row-count-show.luckysheet-count-show {
+  width: max-content !important;
+  min-width: max-content !important;
+  height: auto !important;
+  padding: 4px 6px !important;
+  line-height: 1.2 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+.table-preview-grid:not(.is-fallback) #luckysheet-row-count-show.luckysheet-count-show div {
+  display: inline !important;
+  width: auto !important;
+  height: auto !important;
+  line-height: 1.2 !important;
+  writing-mode: horizontal-tb !important;
+  -ms-writing-mode: lr-tb !important;
+}
+
+.luckysheet-print-viewList,
+#luckysheet-print-viewList,
+.luckysheet-print-viewBtn,
+#luckysheet-print-viewBtn {
+  display: none !important;
+}
+
+.table-preview-grid.is-fallback {
+  overflow: auto;
+}
+
+.table-preview-grid .fallback-table {
+  min-width: 100%;
+  margin: 0;
+  box-shadow: none;
+  font-size: 0.78rem;
+}
+
+.table-preview-fields {
+  flex: 0 0 auto;
+  margin: 0 16px 16px;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.table-preview-fields[hidden] {
+  display: none;
+}
+
+.table-preview-fields-resizer {
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 -1px;
+  position: relative;
+  z-index: 3;
+  cursor: row-resize;
+  touch-action: none;
+}
+
+.table-preview-fields-resizer::before {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--border-strong);
+}
+
+.table-preview-fields-resizer:hover::before,
+.table-preview-fields-resizer:focus::before,
+.report-shell.is-field-resizing .table-preview-fields-resizer::before {
+  background: var(--primary-soft);
+}
+
+.table-preview-fields-panel {
+  height: var(--table-preview-fields-height);
+  min-height: 88px;
+  max-height: 46vh;
+  padding: 0;
+  overflow: auto;
+  resize: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-soft);
+}
+
+.table-preview-fields-panel:not([open]) {
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+  resize: none;
+}
+
+.table-preview-fields-summary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  margin: 0;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-soft);
+  color: var(--primary);
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+}
+
+.table-preview-fields-panel:not([open]) .table-preview-fields-summary {
+  border-bottom: 0;
+}
+
+.table-preview-fields-body {
+  padding: 10px 12px 12px;
+}
+
+.table-preview-fields dl {
+  display: grid;
+  grid-template-columns: minmax(88px, max-content) minmax(0, 1fr);
+  gap: 5px 10px;
+  margin: 0;
+}
+
+.table-preview-fields dt {
+  min-width: 0;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  word-break: break-word;
+}
+
+.table-preview-fields dd {
+  margin: 0;
+  min-width: 0;
+  word-break: break-word;
+}
+
+.table-preview-loading,
+.table-preview-empty {
+  display: grid;
+  min-height: 180px;
+  place-items: center;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+/* ============================================================
+   Code blocks
+   ============================================================ */
+pre {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 4px 4px 0;
+  padding: 1em 1.2em;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  line-height: 1.65;
+  margin: 1.3em 0;
+  color: var(--text);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+  word-break: normal;
+  border: none;
+}
+
+/* ============================================================
+   Lists
+   ============================================================ */
+ul, ol { margin: 0.85em 0; padding-left: 1.8em; }
+li     { margin: 0.32em 0; }
+
+ol li::marker { color: var(--accent); font-weight: 600; }
+ul li::marker { color: var(--primary-soft); }
+
+/* ============================================================
+   Sample-info table emphasis
+   ============================================================ */
+.sample-info { margin: 1em 0 2em; }
+
+/* ============================================================
+   Anchor offset
+   ============================================================ */
+a[name] {
+  display: block;
+  position: relative;
+  top: -2.5em;
+  visibility: hidden;
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.report-footer {
+  margin-top: 4em;
+  padding-top: 1.6em;
+  border-top: 1px solid var(--border-strong);
+  font-size: 0.84em;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+
+.report-footer::before {
+  content: "✦";
+  display: block;
+  color: var(--accent);
+  font-size: 1.2em;
+  margin-bottom: 0.4em;
+}
+
+/* ============================================================
+   Print styles
+   ============================================================ */
+@media print {
+  html,
+  body {
+    height: auto;
+    overflow: visible;
+    font-size: 10.5pt;
+    line-height: 1.65;
+    background: none;
+  }
+  .report-shell {
+    display: block;
+    height: auto;
+    overflow: visible;
+  }
+  .report-main {
+    height: auto;
+    padding: 0;
+    overflow: visible;
+  }
+  .report-container {
+    width: auto;
+    min-height: 0;
+    max-width: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  h1 {
+    font-size: 17pt;
+    background: none !important;
+    border-top: 3pt solid #000;
+    border-bottom: 1pt solid #000;
+    margin: 0 0 1em;
+  }
+  h2 {
+    font-size: 12pt;
+    background: none !important;
+    border-left: 3pt solid #000;
+    color: #000;
+  }
+  h3 { font-size: 10.5pt; }
+  .figure { box-shadow: none; background: none; border: none; padding: 0; }
+  .figure img { box-shadow: none; max-height: 22cm; }
+  .figure-scroll {
+    display: block;
+    overflow: visible;
+    padding: 0;
+  }
+  .figure-scroll .img-link { display: block; margin: 0.6em 0; }
+  .figure-scroll img { max-height: 22cm; max-width: 100%; width: auto; }
+  a { color: #000; text-decoration: none; }
+  a.file-link { border: 1px solid #ccc; background: none; }
+  .file-link::before { content: ""; }
+  .figure, table { page-break-inside: avoid; }
+  h1, h2, h3 { page-break-after: avoid; }
+  .report-toc {
+    position: static;
+    width: auto;
+    max-height: none;
+    background: none;
+    box-shadow: none;
+    page-break-after: always;
+  }
+  .toc-body { display: block !important; overflow: visible; }
+  .toc-toggle { padding: 0; min-height: auto; }
+  .toc-toggle::after { display: none; }
+  .report-toc .toc-sublist { max-height: none; }
+  .img-link::before,
+  .img-link::after { display: none; }
+  .table-preview-drawer,
+  .table-preview-splitter { display: none; }
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 1280px) {
+  .report-main {
+    padding-left: 64px;
+  }
+  .report-shell.table-preview-open {
+    grid-template-columns: minmax(420px, 1fr) 8px minmax(360px, var(--table-preview-width));
+  }
+  .report-toc {
+    top: 0.75rem;
+    left: 0.75rem;
+    width: 240px;
+    max-height: calc(100vh - 1.5rem);
+  }
+  .report-toc.is-collapsed {
+    width: 46px;
+  }
+  .report-shell.table-preview-open .report-main {
+    padding-left: 64px;
+  }
+  .report-shell.table-preview-open .report-toc {
+    width: 46px;
+  }
+  .report-shell.table-preview-open .report-toc .toc-body {
+    max-height: 0;
+    opacity: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    pointer-events: none;
+  }
+  .report-shell.table-preview-open .report-toc .toc-toggle {
+    justify-content: center;
+    min-height: 46px;
+    padding: 0;
+    writing-mode: vertical-rl;
+    letter-spacing: 0.16em;
+  }
+  .report-shell.table-preview-open .report-toc .toc-toggle::after {
+    content: "+";
+    writing-mode: horizontal-tb;
+    position: absolute;
+    right: -7px;
+    top: -7px;
+  }
+  .report-shell.table-preview-open .table-preview-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .report-shell.table-preview-open .table-preview-download {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 1024px) {
+  html,
+  body {
+    height: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+  .report-shell,
+  .report-shell.table-preview-open {
+    height: 100vh;
+    min-height: 100vh;
+    overflow: hidden;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+  }
+  .report-shell.table-preview-open {
+    grid-template-rows: minmax(260px, 1fr) minmax(300px, 52vh);
+  }
+  .report-main {
+    height: auto;
+    min-height: 0;
+    padding: 0 0 0 64px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .report-shell.table-preview-open .report-main {
+    padding: 0 0 0 64px;
+  }
+  .report-container {
+    width: 100%;
+    min-height: 100vh;
+    max-width: 100%;
+    margin: 0;
+    border-radius: 0;
+    padding: 1.6rem 1.2rem;
+    box-shadow: none;
+  }
+  h1 {
+    font-size: 1.5rem;
+    margin: 0 -1rem 1.2em;
+    padding: 1.2rem 1rem 1rem;
+  }
+  h2 { font-size: 1.18rem; padding-left: 0.7em; }
+  table { font-size: 0.85em; }
+  table thead th, table tbody td { padding: 7px 9px; }
+  .figure { padding: 0.5em; }
+  .table-preview-splitter {
+    display: none !important;
+  }
+  .table-preview-drawer {
+    position: relative;
+    height: auto;
+    min-height: 0;
+    border-left: 0;
+    border-top: 1px solid var(--border-strong);
+    box-shadow: none;
+  }
+  .report-shell.table-preview-open .table-preview-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+  .report-shell.table-preview-open .table-preview-title {
+    grid-column: auto;
+  }
+  .report-shell.table-preview-open .table-preview-download {
+    grid-column: auto;
+  }
+  .table-preview-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .table-preview-download {
+    grid-column: 1 / -1;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .report-shell.table-preview-open {
+    grid-template-rows: minmax(220px, 44vh) minmax(320px, 56vh);
+  }
+  .table-preview-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+  .report-shell.table-preview-open .table-preview-title,
+  .table-preview-title {
+    grid-column: auto;
+  }
+  .report-shell.table-preview-open .table-preview-download,
+  .table-preview-download {
+    grid-column: auto;
+  }
+  .table-preview-actions {
+    gap: 6px;
+  }
+  .table-preview-download,
+  .table-preview-close {
+    min-height: 30px;
+    padding: 0 8px;
+    font-size: 0.76rem;
+  }
+  .table-preview-grid {
+    margin: 10px 10px 6px;
+  }
+  .table-preview-fields {
+    margin: 0 10px 10px;
+  }
+  .table-preview-fields dl {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px 0;
+  }
+  .table-preview-fields dd {
+    margin-bottom: 6px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="report-shell" id="report-shell">
+  <main class="report-main">
+    <div class="report-container">
+{{CONTENT}}
+    </div>
+  </main>
+  <div
+    class="table-preview-splitter"
+    id="table-preview-splitter"
+    role="separator"
+    aria-orientation="vertical"
+    aria-controls="table-preview-drawer"
+    aria-valuemin="360"
+    aria-valuemax="960"
+    aria-valuenow="640"
+    tabindex="0"
+    title="拖动调整表格预览宽度"
+  ></div>
+  <aside class="table-preview-drawer" id="table-preview-drawer" aria-hidden="true" aria-label="表格预览">
+    <div class="table-preview-header">
+      <div class="table-preview-title">
+        <strong class="table-preview-file-row">
+          <span class="table-preview-file-name" id="table-preview-title">表格预览</span>
+          <span class="table-preview-helper" id="table-preview-helper" tabindex="0" role="note" hidden>i</span>
+        </strong>
+        <span class="table-preview-meta" id="table-preview-meta">未选择表格</span>
+        <span class="table-preview-status" id="table-preview-status" hidden></span>
+      </div>
+      <div class="table-preview-actions">
+        <a class="table-preview-download" id="table-preview-download" href="#" download>下载源文件</a>
+        <button class="table-preview-close" type="button" data-table-preview-close aria-label="关闭表格预览">关闭</button>
+      </div>
+    </div>
+    <div class="table-preview-grid" id="table-preview-grid">
+      <div class="table-preview-empty">点击正文中的表格文件进行预览</div>
+    </div>
+    <div class="table-preview-fields" id="table-preview-fields" hidden></div>
+    <div class="table-preview-helper-popover" id="table-preview-helper-popover" role="tooltip" hidden></div>
+  </aside>
+</div>
+{{TABLE_PREVIEW_MANIFEST_SCRIPT}}
+<script>
+{{TABLE_PREVIEW_RUNTIME}}
+</script>
+<script>
+(function () {
+  const toc = document.querySelector(".report-toc");
+  if (!toc) return;
+
+  const toggle = toc.querySelector(".toc-toggle");
+  const links = Array.from(toc.querySelectorAll("a[href^='#']"));
+  const headings = links
+    .map((link) => document.getElementById(decodeURIComponent(link.getAttribute("href").slice(1))))
+    .filter(Boolean);
+  let activeTimer = null;
+
+  function setCollapsed(collapsed) {
+    toc.classList.toggle("is-collapsed", collapsed);
+    toc.classList.toggle("is-expanded", !collapsed);
+    if (toggle) toggle.setAttribute("aria-expanded", String(!collapsed));
+  }
+
+  const compactToc = window.matchMedia("(max-width: 1280px)");
+  setCollapsed(compactToc.matches);
+  compactToc.addEventListener("change", () => setCollapsed(compactToc.matches));
+
+  function setActive(id) {
+    if (!id) return;
+    links.forEach((link) => {
+      const targetId = decodeURIComponent(link.getAttribute("href").slice(1));
+      const isActive = targetId === id;
+      link.classList.toggle("is-active", isActive);
+      const topItem = link.closest(".toc-level-2");
+      if (topItem && isActive) {
+        toc.querySelectorAll(".toc-level-2.is-active-section")
+          .forEach((item) => item.classList.remove("is-active-section"));
+        topItem.classList.add("is-active-section");
+      }
+    });
+  }
+
+  function scheduleActive(id, immediate) {
+    if (!id) return;
+    window.clearTimeout(activeTimer);
+    activeTimer = window.setTimeout(() => setActive(id), immediate ? 0 : 220);
+  }
+
+  if (toggle) {
+    toggle.addEventListener("click", () => {
+      setCollapsed(!toc.classList.contains("is-collapsed"));
+    });
+  }
+
+  links.forEach((link) => {
+    link.addEventListener("click", () => {
+      setCollapsed(compactToc.matches);
+      const id = decodeURIComponent(link.getAttribute("href").slice(1));
+      scheduleActive(id, true);
+    });
+  });
+
+  if (!headings.length) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    const visible = entries
+      .filter((entry) => entry.isIntersecting)
+      .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+    if (visible.length) scheduleActive(visible[0].target.id, false);
+  }, { rootMargin: "-32% 0px -58% 0px", threshold: [0, 0.1, 1] });
+
+  headings.forEach((heading) => observer.observe(heading));
+  scheduleActive(headings[0].id, true);
+})();
+
+(function () {
+  const runtime = window.__OMICS_TABLE_RUNTIME__ || {};
+  const manifest = window.__OMICS_TABLE_MANIFEST__ || { tables: {} };
+  const triggers = Array.from(document.querySelectorAll(".table-preview-trigger"));
+  if (!triggers.length) return;
+
+  const shell = document.getElementById("report-shell");
+  const drawer = document.getElementById("table-preview-drawer");
+  const splitter = document.getElementById("table-preview-splitter");
+  const title = document.getElementById("table-preview-title");
+  const helper = document.getElementById("table-preview-helper");
+  const helperPopover = document.getElementById("table-preview-helper-popover");
+  const meta = document.getElementById("table-preview-meta");
+  const status = document.getElementById("table-preview-status");
+  const download = document.getElementById("table-preview-download");
+  const grid = document.getElementById("table-preview-grid");
+  const fields = document.getElementById("table-preview-fields");
+  let currentPayload = null;
+  let luckysheetPromise = null;
+  let renderTimer = null;
+  let resizePointerId = null;
+  let fieldsResizePointerId = null;
+  let fieldsResizeStartY = 0;
+  let fieldsResizeStartHeight = 0;
+  let pendingPreviewWidth = null;
+  let pendingFieldsHeight = null;
+  let previewWidthFrame = null;
+  let fieldsHeightFrame = null;
+  let luckysheetResizeFrame = null;
+  let luckysheetChromeTimer = null;
+  let luckysheetChromeObserver = null;
+  let helperTimer = null;
+
+  function escapeHtml(value) {
+    return String(value == null ? "" : value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function previewBounds() {
+    const stacked = window.matchMedia && window.matchMedia("(max-width: 1024px)").matches;
+    const mainMin = stacked ? 0 : (window.innerWidth <= 1280 ? 420 : 560);
+    const splitterWidth = stacked ? 0 : (window.innerWidth <= 1280 ? 8 : 10);
+    const layoutMax = window.innerWidth - mainMin - splitterWidth;
+    const wideMax = Math.max(360, Math.floor(window.innerWidth * 0.68));
+    const max = Math.max(320, Math.min(960, wideMax, layoutMax));
+    const min = Math.min(max, stacked ? 320 : 360);
+    return { min, max };
+  }
+
+  function setPreviewWidth(width) {
+    if (!shell || !splitter) return;
+    const bounds = previewBounds();
+    const next = Math.max(bounds.min, Math.min(bounds.max, width));
+    shell.style.setProperty("--table-preview-width", `${Math.round(next)}px`);
+    splitter.setAttribute("aria-valuemin", String(bounds.min));
+    splitter.setAttribute("aria-valuemax", String(bounds.max));
+    splitter.setAttribute("aria-valuenow", String(Math.round(next)));
+  }
+
+  function schedulePreviewWidth(width) {
+    pendingPreviewWidth = width;
+    if (previewWidthFrame) return;
+    previewWidthFrame = window.requestAnimationFrame(() => {
+      previewWidthFrame = null;
+      const next = pendingPreviewWidth;
+      pendingPreviewWidth = null;
+      setPreviewWidth(next);
+    });
+  }
+
+  function flushPreviewWidth() {
+    if (previewWidthFrame) {
+      window.cancelAnimationFrame(previewWidthFrame);
+      previewWidthFrame = null;
+    }
+    if (pendingPreviewWidth != null) {
+      setPreviewWidth(pendingPreviewWidth);
+      pendingPreviewWidth = null;
+    }
+  }
+
+  function currentPreviewWidth() {
+    const measured = drawer ? drawer.getBoundingClientRect().width : 0;
+    return measured || 640;
+  }
+
+  function fieldsHeightBounds() {
+    const drawerHeight = drawer ? drawer.getBoundingClientRect().height : window.innerHeight;
+    const headerHeight = drawer ? (drawer.querySelector(".table-preview-header")?.getBoundingClientRect().height || 0) : 0;
+    const min = 88;
+    const tableMin = drawerHeight < 420 ? 120 : 180;
+    const maxByDrawer = Math.max(min, Math.floor((drawerHeight - headerHeight) * 0.56));
+    const maxByAvailableSpace = Math.max(min, Math.floor(drawerHeight - headerHeight - tableMin - 48));
+    const maxByViewport = Math.max(min, Math.floor(window.innerHeight * 0.46));
+    const max = Math.max(min, Math.min(460, maxByDrawer, maxByAvailableSpace, maxByViewport));
+    return { min, max };
+  }
+
+  function fieldPanel() {
+    return fields ? fields.querySelector(".table-preview-fields-panel") : null;
+  }
+
+  function fieldsResizer() {
+    return fields ? fields.querySelector(".table-preview-fields-resizer") : null;
+  }
+
+  function currentFieldsHeight() {
+    const panel = fieldPanel();
+    const measured = panel && panel.open ? panel.getBoundingClientRect().height : 0;
+    if (measured) return measured;
+    const current = getComputedStyle(shell || document.documentElement)
+      .getPropertyValue("--table-preview-fields-height")
+      .trim();
+    const parsed = Number.parseFloat(current);
+    return Number.isFinite(parsed) ? parsed : 220;
+  }
+
+  function setFieldsHeight(height) {
+    if (!shell || !fields || fields.hidden) return;
+    const bounds = fieldsHeightBounds();
+    const next = Math.max(bounds.min, Math.min(bounds.max, height));
+    shell.style.setProperty("--table-preview-fields-height", `${Math.round(next)}px`);
+    const handle = fieldsResizer();
+    if (handle) {
+      handle.setAttribute("aria-valuemin", String(bounds.min));
+      handle.setAttribute("aria-valuemax", String(bounds.max));
+      handle.setAttribute("aria-valuenow", String(Math.round(next)));
+    }
+    scheduleLuckysheetResize();
+  }
+
+  function scheduleFieldsHeight(height) {
+    pendingFieldsHeight = height;
+    if (fieldsHeightFrame) return;
+    fieldsHeightFrame = window.requestAnimationFrame(() => {
+      fieldsHeightFrame = null;
+      const next = pendingFieldsHeight;
+      pendingFieldsHeight = null;
+      setFieldsHeight(next);
+    });
+  }
+
+  function flushFieldsHeight() {
+    if (fieldsHeightFrame) {
+      window.cancelAnimationFrame(fieldsHeightFrame);
+      fieldsHeightFrame = null;
+    }
+    if (pendingFieldsHeight != null) {
+      setFieldsHeight(pendingFieldsHeight);
+      pendingFieldsHeight = null;
+    }
+  }
+
+  function resizeLuckysheet() {
+    if (window.luckysheet && typeof window.luckysheet.resize === "function") {
+      try {
+        window.luckysheet.resize();
+      } catch (error) {
+        // Resize is best-effort; the next render will recreate the grid if needed.
+      }
+    }
+  }
+
+  function scheduleLuckysheetResize() {
+    if (luckysheetResizeFrame) return;
+    luckysheetResizeFrame = window.requestAnimationFrame(() => {
+      luckysheetResizeFrame = null;
+      resizeLuckysheet();
+      window.requestAnimationFrame(resizeLuckysheet);
+    });
+  }
+
+  function handleTableWheel(event) {
+    const ybar = document.getElementById("luckysheet-scrollbar-y");
+    const xbar = document.getElementById("luckysheet-scrollbar-x");
+    const unit = event.deltaMode === 1 ? 16 : (event.deltaMode === 2 ? grid.clientHeight : 1);
+    const deltaX = event.deltaX * unit;
+    const deltaY = event.deltaY * unit;
+    let consumed = false;
+
+    function scrollElement(element, axis, delta) {
+      const positionKey = axis === "x" ? "scrollLeft" : "scrollTop";
+      const sizeKey = axis === "x" ? "scrollWidth" : "scrollHeight";
+      const clientKey = axis === "x" ? "clientWidth" : "clientHeight";
+      const max = Math.max(0, element[sizeKey] - element[clientKey]);
+      const before = element[positionKey];
+      const next = Math.max(0, Math.min(max, before + delta));
+      element[positionKey] = next;
+      if (element[positionKey] !== before) {
+        element.dispatchEvent(new Event("scroll", { bubbles: true }));
+      }
+    }
+
+    if (xbar && (deltaX || event.shiftKey)) {
+      scrollElement(xbar, "x", deltaX || deltaY);
+      consumed = true;
+    }
+
+    if (ybar && !event.shiftKey && deltaY) {
+      scrollElement(ybar, "y", deltaY);
+      consumed = true;
+    }
+
+    if (consumed) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }
+
+  function bindTableWheel() {
+    grid.removeEventListener("wheel", handleTableWheel, true);
+    grid.addEventListener("wheel", handleTableWheel, { capture: true, passive: false });
+  }
+
+  function scheduleRenderSheet(delay) {
+    window.clearTimeout(renderTimer);
+    renderTimer = window.setTimeout(renderSheet, delay == null ? 120 : delay);
+  }
+
+  function openPreview() {
+    if (shell) shell.classList.add("table-preview-open");
+    drawer.setAttribute("aria-hidden", "false");
+    setPreviewWidth(currentPreviewWidth());
+    scheduleLuckysheetResize();
+  }
+
+  function closePreview() {
+    if (shell) shell.classList.remove("table-preview-open");
+    drawer.setAttribute("aria-hidden", "true");
+    stopLuckysheetChromeSync();
+  }
+
+  function setLoading(message) {
+    grid.classList.remove("is-fallback");
+    grid.innerHTML = `<div class="table-preview-loading">${escapeHtml(message)}</div>`;
+    renderFieldDescriptions(null);
+  }
+
+  function setStatus(message) {
+    status.textContent = message || "";
+    status.hidden = !message;
+  }
+
+  function setPreviewHelper(message) {
+    if (!helper) return;
+    const text = message || "";
+    helper.hidden = !text;
+    helper.setAttribute("aria-label", text);
+    helper.removeAttribute("title");
+    if (helperPopover) {
+      helperPopover.textContent = text;
+      helperPopover.hidden = true;
+      if (text) {
+        helper.setAttribute("aria-describedby", "table-preview-helper-popover");
+      } else {
+        helper.removeAttribute("aria-describedby");
+      }
+    }
+  }
+
+  function positionPreviewHelperPopover() {
+    if (!helper || !helperPopover || helperPopover.hidden) return;
+    const margin = 8;
+    const helperRect = helper.getBoundingClientRect();
+    const popoverRect = helperPopover.getBoundingClientRect();
+    const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+    let left = helperRect.left;
+    let top = helperRect.bottom + 6;
+    if (left + popoverRect.width + margin > viewportWidth) {
+      left = viewportWidth - popoverRect.width - margin;
+    }
+    left = Math.max(margin, left);
+    if (top + popoverRect.height + margin > viewportHeight) {
+      top = helperRect.top - popoverRect.height - 6;
+    }
+    if (top < margin) {
+      top = Math.min(viewportHeight - popoverRect.height - margin, helperRect.bottom + 6);
+      top = Math.max(margin, top);
+    }
+    helperPopover.style.left = `${Math.round(left)}px`;
+    helperPopover.style.top = `${Math.round(top)}px`;
+  }
+
+  function showPreviewHelperSoon() {
+    if (!helper || !helperPopover || helper.hidden || !helperPopover.textContent) return;
+    window.clearTimeout(helperTimer);
+    helperTimer = window.setTimeout(() => {
+      helperPopover.hidden = false;
+      window.requestAnimationFrame(positionPreviewHelperPopover);
+    }, 90);
+  }
+
+  function hidePreviewHelper() {
+    window.clearTimeout(helperTimer);
+    if (helperPopover) helperPopover.hidden = true;
+  }
+
+  function appendStatus(message) {
+    if (!message) return;
+    const current = status.textContent.trim();
+    setStatus([current, message].filter(Boolean).join(" "));
+  }
+
+  function bindFieldsHeightResizer() {
+    const handle = fieldsResizer();
+    const panel = fieldPanel();
+    if (!handle || !panel || handle.dataset.bound === "1") return;
+    handle.dataset.bound = "1";
+    setFieldsHeight(currentFieldsHeight());
+    handle.addEventListener("pointerdown", (event) => {
+      if (!panel.open) return;
+      fieldsResizePointerId = event.pointerId;
+      fieldsResizeStartY = event.clientY;
+      fieldsResizeStartHeight = currentFieldsHeight();
+      if (shell) shell.classList.add("is-field-resizing");
+      try {
+        handle.setPointerCapture(event.pointerId);
+      } catch (error) {
+        // Synthetic pointer events may not be capturable; real drags still continue.
+      }
+      event.preventDefault();
+    });
+    handle.addEventListener("pointermove", (event) => {
+      if (fieldsResizePointerId !== event.pointerId) return;
+      scheduleFieldsHeight(fieldsResizeStartHeight + fieldsResizeStartY - event.clientY);
+    });
+    const finishFieldsResize = (event) => {
+      if (fieldsResizePointerId !== event.pointerId) return;
+      fieldsResizePointerId = null;
+      flushFieldsHeight();
+      if (handle.hasPointerCapture && handle.hasPointerCapture(event.pointerId)) {
+        handle.releasePointerCapture(event.pointerId);
+      }
+      if (shell) shell.classList.remove("is-field-resizing");
+      scheduleLuckysheetResize();
+    };
+    handle.addEventListener("pointerup", finishFieldsResize);
+    handle.addEventListener("pointercancel", finishFieldsResize);
+    handle.addEventListener("keydown", (event) => {
+      if (!panel.open) return;
+      if (event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
+      event.preventDefault();
+      const delta = event.shiftKey ? 80 : 32;
+      setFieldsHeight(currentFieldsHeight() + (event.key === "ArrowUp" ? delta : -delta));
+    });
+    panel.addEventListener("toggle", () => scheduleLuckysheetResize());
+  }
+
+  function renderFieldDescriptions(payload) {
+    if (!fields) return;
+    if (payload == null) {
+      fields.hidden = true;
+      fields.innerHTML = "";
+      return;
+    }
+    const descriptions = payload && Array.isArray(payload.fieldDescriptions)
+      ? payload.fieldDescriptions
+      : [];
+    if (!descriptions.length) {
+      fields.hidden = true;
+      fields.innerHTML = "";
+      return;
+    }
+    const rows = descriptions.map((item) => {
+      const field = escapeHtml(item.field || "");
+      const description = escapeHtml(item.description || "");
+      return `<dt>${field}</dt><dd>${description}</dd>`;
+    }).join("");
+    fields.innerHTML = `<div class="table-preview-fields-resizer" role="separator" aria-orientation="horizontal" aria-controls="table-preview-fields-panel" aria-valuemin="88" aria-valuemax="460" aria-valuenow="220" tabindex="0" title="拖动调整字段说明高度"></div><details class="table-preview-fields-panel" id="table-preview-fields-panel" open><summary class="table-preview-fields-summary">字段说明</summary><div class="table-preview-fields-body"><dl>${rows}</dl></div></details>`;
+    fields.hidden = false;
+    bindFieldsHeightResizer();
+  }
+
+  function loadScriptOnce(src, marker) {
+    if (!src) return Promise.reject(new Error("missing script source"));
+    if (window[marker]) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const existing = document.querySelector(`script[data-marker="${marker}"]`);
+      if (existing) {
+        existing.addEventListener("load", () => resolve(), { once: true });
+        existing.addEventListener("error", () => reject(new Error(`failed to load ${src}`)), { once: true });
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = src;
+      script.async = true;
+      script.dataset.marker = marker;
+      script.onload = () => {
+        window[marker] = true;
+        resolve();
+      };
+      script.onerror = () => reject(new Error(`failed to load ${src}`));
+      document.head.appendChild(script);
+    });
+  }
+
+  function ensureLuckysheet() {
+    if (window.luckysheet) return Promise.resolve(true);
+    if (!runtime.vendorAvailable || !runtime.luckysheetJs) return Promise.resolve(false);
+    if (!luckysheetPromise) {
+      const jqueryReady = window.jQuery
+        ? Promise.resolve()
+        : loadScriptOnce(runtime.jqueryJs, "__OMICS_JQUERY_LOADED__");
+      luckysheetPromise = jqueryReady
+        .then(() => {
+          if (window.jQuery && !window.jQuery.fn.mousewheel) {
+            window.jQuery.fn.mousewheel = function (handler) {
+              return this.on("wheel", function (event) {
+                const original = event.originalEvent || event;
+                const deltaY = -original.deltaY || original.wheelDelta || 0;
+                const deltaX = -original.deltaX || 0;
+                return handler.call(this, event, deltaY, deltaX);
+              });
+            };
+            window.jQuery.fn.unmousewheel = function (handler) {
+              return handler ? this.off("wheel", handler) : this.off("wheel");
+            };
+          }
+        })
+        .then(() => loadScriptOnce(runtime.luckysheetJs, "__OMICS_LUCKYSHEET_LOADED__"))
+        .then(() => Boolean(window.luckysheet))
+        .catch(() => false);
+    }
+    return luckysheetPromise;
+  }
+
+  function loadSidecar(entry) {
+    window.__OMICS_TABLE_PREVIEWS__ = window.__OMICS_TABLE_PREVIEWS__ || {};
+    if (window.__OMICS_TABLE_PREVIEWS__[entry.id]) {
+      return Promise.resolve(window.__OMICS_TABLE_PREVIEWS__[entry.id]);
+    }
+    return loadScriptOnce(entry.sidecar, `__OMICS_TABLE_${entry.id}_LOADED__`)
+      .then(() => window.__OMICS_TABLE_PREVIEWS__[entry.id]);
+  }
+
+  function maxCols(rows) {
+    return rows.reduce((max, row) => Math.max(max, row.length), 0);
+  }
+
+  function textDisplayWidth(value) {
+    return Array.from(String(value == null ? "" : value)).reduce((width, char) => {
+      return width + (char.charCodeAt(0) > 255 ? 2 : 1);
+    }, 0);
+  }
+
+  function buildColumnWidths(rows) {
+    const sampleRows = rows.slice(0, 250);
+    const colCount = Math.max(maxCols(sampleRows), maxCols(rows.slice(0, 1)));
+    const widths = {};
+    for (let col = 0; col < colCount; col += 1) {
+      let maxWidth = 0;
+      sampleRows.forEach((row) => {
+        maxWidth = Math.max(maxWidth, textDisplayWidth(row[col]));
+      });
+      widths[col] = Math.max(72, Math.min(260, Math.ceil(maxWidth * 7.5 + 24)));
+    }
+    return widths;
+  }
+
+  function buildLuckysheetData(payload) {
+    return (payload.sheets || []).map((sheet, index) => {
+      const rows = sheet.rows || [];
+      const celldata = [];
+      rows.forEach((row, r) => {
+        row.forEach((value, c) => {
+          if (value === "" || value == null) return;
+          celldata.push({ r, c, v: { v: value, m: String(value) } });
+        });
+      });
+      return {
+        name: sheet.name || `Sheet ${index + 1}`,
+        index: String(index),
+        order: index,
+        status: index === 0 ? 1 : 0,
+        row: Math.max(rows.length, 20),
+        column: Math.max(maxCols(rows), 10),
+        celldata,
+        config: {
+          columnlen: buildColumnWidths(rows),
+        },
+      };
+    });
+  }
+
+  function buildPreviewStatus(payload) {
+    const truncatedSheets = (payload.sheets || []).filter((sheet) => sheet.truncated);
+    if (!truncatedSheets.length) return "";
+    const sheet = truncatedSheets[0];
+    const sheetNote = truncatedSheets.length > 1 ? `，共 ${truncatedSheets.length} 个工作表预览采用截断加载` : "";
+    return `该表较大，当前预览加载 ${sheet.storedRowCount} 行、${sheet.storedColCount} 列${sheetNote}；完整内容请下载源文件。`;
+  }
+
+  function removeLuckysheetPrintControls() {
+    document
+      .querySelectorAll(".luckysheet-print-viewList, #luckysheet-print-viewList, .luckysheet-print-viewBtn, #luckysheet-print-viewBtn")
+      .forEach((element) => {
+        element.remove();
+      });
+  }
+
+  function keepLuckysheetPreviewToolbarVisible() {
+    const editor = document.getElementById("luckysheet-wa-editor");
+    const buttonHeight = 30;
+    const previewToolbarLabels = {
+      "luckysheet-icon-freezen-menu": "冻结",
+      "luckysheet-icon-autofilter": "筛选/排序",
+      "luckysheet-icon-seachmore": "查找/替换",
+    };
+    Object.entries(previewToolbarLabels).forEach(([id, label]) => {
+      const element = document.getElementById(id);
+      if (!element) return;
+      if (element.textContent !== label) {
+        element.textContent = label;
+      }
+      element.classList.add("omics-luckysheet-preview-button");
+      element.dataset.previewLabel = label;
+      element.setAttribute("title", label);
+      element.setAttribute("aria-label", label);
+      element.hidden = false;
+      element.style.display = "inline-flex";
+      element.style.alignItems = "center";
+      element.style.justifyContent = "center";
+      element.style.width = "max-content";
+      element.style.minWidth = "max-content";
+      element.style.maxWidth = "none";
+      element.style.height = `${buttonHeight}px`;
+      element.style.lineHeight = "1";
+      element.style.marginTop = "0";
+      element.style.paddingLeft = "10px";
+      element.style.paddingRight = "10px";
+      element.style.textAlign = "center";
+      element.style.textIndent = "0";
+      element.style.whiteSpace = "nowrap";
+      element.style.verticalAlign = "top";
+      element.style.visibility = "visible";
+      if (editor && element.parentElement !== editor) {
+        editor.appendChild(element);
+      }
+    });
+  }
+
+  function syncLuckysheetChrome() {
+    removeLuckysheetPrintControls();
+    keepLuckysheetPreviewToolbarVisible();
+  }
+
+  function stopLuckysheetChromeSync() {
+    if (luckysheetChromeTimer) {
+      window.clearInterval(luckysheetChromeTimer);
+      luckysheetChromeTimer = null;
+    }
+    if (luckysheetChromeObserver) {
+      luckysheetChromeObserver.disconnect();
+      luckysheetChromeObserver = null;
+    }
+  }
+
+  function startLuckysheetChromeSync() {
+    stopLuckysheetChromeSync();
+    const syncUntilStable = () => {
+      syncLuckysheetChrome();
+    };
+    syncUntilStable();
+    window.requestAnimationFrame(syncUntilStable);
+    luckysheetChromeTimer = window.setInterval(syncUntilStable, 500);
+
+    const overflowMenu = document.getElementById("luckysheet-icon-morebtn-div");
+    if (overflowMenu) {
+      luckysheetChromeObserver = new MutationObserver(() => window.requestAnimationFrame(syncLuckysheetChrome));
+      luckysheetChromeObserver.observe(overflowMenu, { childList: true });
+    }
+  }
+
+  function renderFallback(sheet) {
+    const rows = sheet.rows || [];
+    const visibleRows = rows.slice(0, 1000);
+    const cellHtml = (value) => {
+      const text = String(value == null ? "" : value);
+      return escapeHtml(text);
+    };
+    const body = visibleRows.map((row, rowIndex) => {
+      const cells = row.map((value) => `<td>${cellHtml(value)}</td>`).join("");
+      return rowIndex === 0 ? `<thead><tr>${cells.replaceAll("<td>", "<th>").replaceAll("</td>", "</th>")}</tr></thead><tbody>` : `<tr>${cells}</tr>`;
+    }).join("") + (visibleRows.length ? "</tbody>" : "");
+    grid.classList.add("is-fallback");
+    grid.innerHTML = visibleRows.length
+      ? `<table class="fallback-table">${body}</table>`
+      : '<div class="table-preview-empty">该表暂无可预览内容。</div>';
+    if (rows.length > visibleRows.length) {
+      setPreviewHelper(buildPreviewStatus(currentPayload) || `当前仅展示前 ${visibleRows.length} 行；完整内容请下载源文件。`);
+    }
+  }
+
+  function renderSheet() {
+    if (!currentPayload || !currentPayload.sheets || !currentPayload.sheets.length) return;
+    setStatus("");
+    setPreviewHelper(buildPreviewStatus(currentPayload));
+    renderFieldDescriptions(currentPayload);
+
+    ensureLuckysheet().then((canUseLuckysheet) => {
+      if (!canUseLuckysheet || !window.luckysheet) {
+        renderFallback(currentPayload.sheets[0]);
+        return;
+      }
+      grid.classList.remove("is-fallback");
+      grid.innerHTML = "";
+      stopLuckysheetChromeSync();
+      try {
+        window.luckysheet.destroy && window.luckysheet.destroy();
+      } catch (error) {
+        // Ignore stale Luckysheet teardown errors and recreate the preview.
+      }
+      const gridKey = `omics_preview_${currentPayload.id}`;
+      clearLuckysheetPreviewCache(gridKey).then(() => window.luckysheet.create({
+        container: "table-preview-grid",
+        gridKey,
+        data: buildLuckysheetData(currentPayload),
+        title: currentPayload.name,
+        lang: "zh",
+        allowEdit: true,
+        allowUpdate: false,
+        updateUrl: "",
+        loadUrl: "",
+        loadSheetUrl: "",
+        userInfo: false,
+        myFolderUrl: "",
+        showtoolbar: true,
+        showtoolbarConfig: {
+          undoRedo: false,
+          paintFormat: false,
+          currencyFormat: false,
+          percentageFormat: false,
+          numberDecrease: false,
+          numberIncrease: false,
+          moreFormats: false,
+          font: false,
+          fontSize: false,
+          bold: false,
+          italic: false,
+          strikethrough: false,
+          underline: false,
+          textColor: false,
+          fillColor: false,
+          border: false,
+          mergeCell: false,
+          horizontalAlignMode: false,
+          verticalAlignMode: false,
+          textWrapMode: false,
+          textRotateMode: false,
+          image: false,
+          link: false,
+          chart: false,
+          postil: false,
+          pivotTable: false,
+          function: false,
+          frozenMode: true,
+          sortAndFilter: true,
+          conditionalFormat: false,
+          dataVerification: false,
+          splitColumn: false,
+          screenshot: false,
+          findAndReplace: true,
+          protection: false,
+          print: false,
+        },
+        showinfobar: false,
+        showsheetbar: true,
+        showstatisticBar: true,
+        enableAddRow: false,
+        enableAddBackTop: false,
+        forceCalculation: false,
+        cellRightClickConfig: {
+          copy: true,
+          copyAs: false,
+          paste: false,
+          insertRow: false,
+          insertColumn: false,
+          deleteRow: false,
+          deleteColumn: false,
+          deleteCell: false,
+          hideRow: false,
+          hideColumn: false,
+          rowHeight: false,
+          columnWidth: false,
+          clear: false,
+          matrix: false,
+          sort: true,
+          filter: true,
+          chart: false,
+          image: false,
+          link: false,
+          data: false,
+          cellFormat: false,
+        },
+        sheetRightClickConfig: {
+          delete: false,
+          copy: false,
+          rename: false,
+          color: false,
+          hide: false,
+          move: false,
+        },
+        hook: {
+          cellEditBefore: () => false,
+          rangePasteBefore: () => false,
+        },
+      })).then(() => {
+        startLuckysheetChromeSync();
+        scheduleLuckysheetResize();
+        bindTableWheel();
+      });
+    });
+  }
+
+  function clearLuckysheetPreviewCache(gridKey) {
+    const key = `${gridKey}__qkcache`;
+    try {
+      window.localStorage && window.localStorage.removeItem(key);
+    } catch (error) {
+      // Browser storage can be unavailable for file:// reports; rendering can continue.
+    }
+    if (window.localforage && typeof window.localforage.removeItem === "function") {
+      try {
+        return window.localforage.removeItem(key).catch(() => undefined);
+      } catch (error) {
+        return Promise.resolve();
+      }
+    }
+    return Promise.resolve();
+  }
+
+  function showError(entry, message) {
+    title.textContent = entry ? entry.name : "表格预览";
+    meta.textContent = entry ? entry.path : "";
+    setPreviewHelper("");
+    setStatus(message || "表格预览加载失败。");
+    renderFieldDescriptions(null);
+    grid.classList.add("is-fallback");
+    grid.innerHTML = '<div class="table-preview-empty">无法预览该表格，可下载源文件后在本地打开。</div>';
+  }
+
+  function openTable(tableId) {
+    const entry = manifest.tables && manifest.tables[tableId];
+    if (!entry) return;
+    openPreview();
+    setLoading("正在加载表格预览...");
+    title.textContent = entry.name;
+    meta.textContent = `${entry.format.toUpperCase()} · ${entry.rowCount || "-"} x ${entry.colCount || "-"} · ${entry.path}`;
+    download.href = entry.sourceHref;
+    download.download = entry.name;
+    setPreviewHelper("");
+    setStatus("");
+
+    loadSidecar(entry)
+      .then((payload) => {
+        if (!payload || payload.error) {
+          showError(entry, payload && payload.error ? payload.error : "表格预览数据不存在。");
+          return;
+        }
+        currentPayload = payload;
+        scheduleRenderSheet(180);
+      })
+      .catch((error) => showError(entry, error.message));
+  }
+
+  triggers.forEach((trigger) => {
+    trigger.addEventListener("click", () => openTable(trigger.dataset.tableId));
+  });
+
+  document.querySelectorAll("[data-table-preview-close]").forEach((element) => {
+    element.addEventListener("click", closePreview);
+  });
+  if (helper) {
+    helper.addEventListener("pointerenter", showPreviewHelperSoon);
+    helper.addEventListener("pointerleave", hidePreviewHelper);
+    helper.addEventListener("focus", showPreviewHelperSoon);
+    helper.addEventListener("blur", hidePreviewHelper);
+  }
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closePreview();
+  });
+
+  if (splitter && shell) {
+    splitter.addEventListener("pointerdown", (event) => {
+      if (!shell.classList.contains("table-preview-open")) return;
+      resizePointerId = event.pointerId;
+      shell.classList.add("is-resizing");
+      try {
+        splitter.setPointerCapture(event.pointerId);
+      } catch (error) {
+        // Synthetic pointer events may not be capturable; real drags still continue.
+      }
+      event.preventDefault();
+    });
+    splitter.addEventListener("pointermove", (event) => {
+      if (resizePointerId !== event.pointerId) return;
+      schedulePreviewWidth(window.innerWidth - event.clientX);
+    });
+    const finishResize = (event) => {
+      if (resizePointerId !== event.pointerId) return;
+      resizePointerId = null;
+      flushPreviewWidth();
+      if (splitter.hasPointerCapture && splitter.hasPointerCapture(event.pointerId)) {
+        splitter.releasePointerCapture(event.pointerId);
+      }
+      shell.classList.remove("is-resizing");
+      scheduleLuckysheetResize();
+    };
+    splitter.addEventListener("pointerup", finishResize);
+    splitter.addEventListener("pointercancel", finishResize);
+    splitter.addEventListener("keydown", (event) => {
+      if (!shell.classList.contains("table-preview-open")) return;
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+      event.preventDefault();
+      const delta = event.shiftKey ? 80 : 40;
+      setPreviewWidth(currentPreviewWidth() + (event.key === "ArrowLeft" ? delta : -delta));
+      scheduleLuckysheetResize();
+    });
+  }
+
+  window.addEventListener("resize", () => {
+    setPreviewWidth(currentPreviewWidth());
+    setFieldsHeight(currentFieldsHeight());
+    positionPreviewHelperPopover();
+    scheduleLuckysheetResize();
+  });
+})();
+</script>
+</body>
+</html>
