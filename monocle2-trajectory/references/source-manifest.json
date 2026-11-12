@@ -1,0 +1,58 @@
+{
+  "project_root": "/share/data/Projects/20260727-IPF",
+  "captured_date": "2026-10-21",
+  "files": [
+    {
+      "relative_path": "Scripts/60.trajectory_refresh/prepare.py",
+      "sha256": "d78a7e047ddfdbefdfc997f069280812076634303b8b0000ea1aff26a70ed18f"
+    },
+    {
+      "relative_path": "Scripts/60.trajectory_refresh/infer.R",
+      "sha256": "11f074f97abb960ed283d534d1b83c96e1eb7c7541aa48da62e25ec5b5c4865e"
+    },
+    {
+      "relative_path": "Scripts/60.trajectory_refresh/analyze.R",
+      "sha256": "51a9e82a19e6d431986165fce48a3d4b6f3e48434ed234f2aafbb8fa6a3221b4"
+    },
+    {
+      "relative_path": "Scripts/60.trajectory_refresh/gene_stats.R",
+      "sha256": "7976090666875ec5ca6f3721907d9b00161a3a9985b4506c9bc3b794edf3c34a"
+    },
+    {
+      "relative_path": "Scripts/60.trajectory_refresh/config.yaml",
+      "sha256": "6e34cf820686ae073dc86979a4a92ebabcfe28ace43d3cf65692f27697fa7d56"
+    },
+    {
+      "relative_path": "Scripts/60.trajectory_refresh/validate_models.R",
+      "sha256": "31104fe714496644e73029a29df40db0551ca8e7bc824b09ec657c7fafba1144"
+    },
+    {
+      "relative_path": "Scripts/62.shared_trajectory/README.md",
+      "sha256": "284967b7e6b7f1945e8bf6059a6264df02774b513890b2b0cb6206826022c2de"
+    },
+    {
+      "relative_path": "Scripts/62.shared_trajectory/config.yaml",
+      "sha256": "2ee506551bfef5cc361fd44d15f95dc4107cf4b10429f2e232e16c94f1db420b"
+    },
+    {
+      "relative_path": "Scripts/62.shared_trajectory/plot.R",
+      "sha256": "645979933a32e209961edf6fd1e20b35558cb087cd80fa512bcc1272cdf523dc"
+    },
+    {
+      "relative_path": "Scripts/62.shared_trajectory/validate.R",
+      "sha256": "054a5562b377444baf2930c1ff003c4682c50c38d054dfce6a655f0c2e28337d"
+    },
+    {
+      "relative_path": "Scripts/67.gse213001_trajectory_drivers/screen.R",
+      "sha256": "71df0d524090cd8be9e245bd3bf61075f202de95226c798bec63a38c69ebba66"
+    },
+    {
+      "relative_path": "Scripts/67.gse213001_trajectory_drivers/config.yaml",
+      "sha256": "c0ac1677296e788f36bcde8683c5abbb7b6efb7d4cb77a5f7bc32521e28e2bfd"
+    },
+    {
+      "relative_path": "Data/Processed/60.trajectory_refresh/R_sessionInfo.txt",
+      "sha256": "4a69152542dd0b71f0d358b146c1eeb5d4d9f9d8bd52007846d27454a40cbcaa"
+    }
+  ]
+}

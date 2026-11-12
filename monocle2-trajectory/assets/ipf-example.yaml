@@ -1,0 +1,21 @@
+# Historical IPF example inputs; copy into the target project and adapt its own paths/design.
+# No output destination is selected here: it is a required command-line argument.
+organism: Homo sapiens
+counts_mtx: Data/Processed/60.trajectory_refresh/Input/counts.mtx
+cells_tsv: Data/Processed/60.trajectory_refresh/Input/cell_metadata.full.tsv
+genes_tsv: Data/Processed/60.trajectory_refresh/Input/genes.full.tsv
+ordering_tsv: Data/Processed/60.trajectory_refresh/Input/ordering_genes.filtered.tsv
+donor_col: donor
+group_col: condition
+identity_col: cell_types
+root_identity_col: broad_type
+root_score_col: root_marker_score
+root_identity: AT2
+seed: 0
+root:
+  minimum_cells: 20
+  minimum_fraction: 0.5
+DDRTree:
+  norm_method: log
+  residual_model: null
+  maxIter: 100
