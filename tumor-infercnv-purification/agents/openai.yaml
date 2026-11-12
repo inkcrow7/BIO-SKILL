@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tumor inferCNV Purification"
+  short_description: "Use inferCNV to purify malignant cells in tumor scRNA-seq"
+  default_prompt: "Use $tumor-infercnv-purification to identify and purify malignant cells in this tumor single-cell project."

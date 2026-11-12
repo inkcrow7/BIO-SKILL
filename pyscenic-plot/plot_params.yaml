@@ -1,0 +1,42 @@
+workdir: /home/taojj/text/pyscenic_run
+h5ad: /home/taojj/text/adata.annoted.h5ad
+adj_csv: results/adj.csv
+auc_loom: data/output.loom
+celltype_col: cell_types
+group_col: groups
+counts_layer: counts
+top_n: 50
+
+figure_format: pdf
+figure_dpi: 300
+figures_dir: figures
+
+plots:
+  adj_hist:
+    figsize: [6, 4]
+    bins: 50
+    color: steelblue
+    xlabel: "log10 importance"
+    title: null
+  umap:
+    min_dist: 0.5
+    spread: 1.0
+    random_state: 0
+    point_size: null
+    palette: null
+    n_neighbors: 10
+    metric: correlation
+  clustermap:
+    width: 15
+    height: 6.5
+    cmap: Blues
+    linkage_method: average
+    linkage_metric: correlation
+    z_score: null
+  matrixplot:
+    width: 15
+    height: 5.5
+    cmap: Reds
+    standard_scale: group
+    dendrogram: true
+    swap_axes: false
